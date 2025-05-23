@@ -5,6 +5,7 @@ import Sidebar from '../components/layout/Sidebar';
 import Button from '../components/ui/Button';
 import AddLabResultForm from '../components/labs/AddLabResultForm';
 import EditLabResultForm from '../components/labs/EditLabResultForm';
+import ViewLabResult from '../components/labs/ViewLabResult';
 import { useAuth } from '../context/AuthContext';
 import { labs, patients, doctors } from '../utils/mockData';
 import type { Lab } from '../types';
@@ -13,6 +14,7 @@ const LabResultsPage: React.FC = () => {
   const { user } = useAuth();
   const [isAddingLab, setIsAddingLab] = useState(false);
   const [editingLab, setEditingLab] = useState<Lab | null>(null);
+  const [viewingLab, setViewingLab] = useState<Lab | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [labToDelete, setLabToDelete] = useState<Lab | null>(null);
 
@@ -193,7 +195,7 @@ const LabResultsPage: React.FC = () => {
                                 size="sm"
                                 className="mr-2"
                                 leftIcon={<Eye className="h-4 w-4" />}
-                                onClick={() => window.alert('View functionality would go here')}
+                                onClick={() => setViewingLab(lab)}
                               >
                                 View
                               </Button>
@@ -227,6 +229,14 @@ const LabResultsPage: React.FC = () => {
                   </table>
                 </div>
               </>
+            )}
+
+            {/* View Lab Result Modal */}
+            {viewingLab && (
+              <ViewLabResult
+                result={viewingLab}
+                onClose={() => setViewingLab(null)}
+              />
             )}
 
             {/* Delete Confirmation Modal */}
